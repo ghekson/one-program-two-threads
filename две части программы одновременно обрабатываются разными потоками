@@ -1,0 +1,31 @@
+const threads = require("worker_threads");
+
+if(threads.isMainThread) {
+  
+  module.exports = function reticulateSplines(splines){
+    return new Promise ((resolve,reject)=>{
+      
+      let reticulator = new threads.Worker(_filename);
+      
+      reticulator.postMessage(splines);
+      
+      reticulator.on("message",resolve);
+      reticulator.on("error",reject);
+      
+    });  
+  };
+}else{
+  threads.parentPort.once("message",splines=>{
+    
+    for(let splines of splines){
+      
+      spline.reticulate?spline.reticulate():spline.reticulated=true;
+    }
+    
+    threads.parentPort.postMessage(splines);
+  });
+      
+    }
+    
+  })
+}
